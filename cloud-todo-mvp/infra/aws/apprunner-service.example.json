@@ -1,0 +1,36 @@
+{
+  "ServiceName": "cloud-todo-api",
+  "SourceConfiguration": {
+    "ImageRepository": {
+      "ImageIdentifier": "ACCOUNT_ID.dkr.ecr.eu-central-1.amazonaws.com/cloud-todo-api:latest",
+      "ImageConfiguration": {
+        "Port": "8000",
+        "RuntimeEnvironmentVariables": {
+          "APP_ENV": "production",
+          "LOG_LEVEL": "INFO",
+          "CORS_ALLOWED_ORIGINS": "https://YOUR_CLOUDFRONT_DOMAIN"
+        },
+        "RuntimeEnvironmentSecrets": {
+          "DATABASE_URL": "arn:aws:secretsmanager:REGION:ACCOUNT_ID:secret:cloud-todo/DATABASE_URL",
+          "API_KEY": "arn:aws:secretsmanager:REGION:ACCOUNT_ID:secret:cloud-todo/API_KEY"
+        }
+      },
+      "ImageRepositoryType": "ECR"
+    },
+    "AutoDeploymentsEnabled": true,
+    "AuthenticationConfiguration": {
+      "AccessRoleArn": "arn:aws:iam::ACCOUNT_ID:role/AppRunnerECRAccessRole"
+    }
+  },
+  "InstanceConfiguration": {
+    "Cpu": "0.25 vCPU",
+    "Memory": "0.5 GB",
+    "InstanceRoleArn": "arn:aws:iam::ACCOUNT_ID:role/AppRunnerInstanceRole"
+  },
+  "NetworkConfiguration": {
+    "EgressConfiguration": {
+      "EgressType": "VPC",
+      "VpcConnectorArn": "arn:aws:apprunner:REGION:ACCOUNT_ID:vpcconnector/YOUR_CONNECTOR"
+    }
+  }
+}
